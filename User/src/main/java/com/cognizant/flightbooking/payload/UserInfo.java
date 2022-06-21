@@ -1,8 +1,10 @@
 package com.cognizant.flightbooking.payload;
 
+import java.util.Random;
+
 public class UserInfo {
 
-    private Integer id;
+    private Integer id=  new Random().nextInt(99999999);
 	
 	private String userFirstName;
 

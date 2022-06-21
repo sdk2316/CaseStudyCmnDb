@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -77,7 +78,7 @@ public class UserController {
 	}
 
 	@PostMapping("/bookFlight")
-	public ResponseEntity<UserInfo> bookFlight(@RequestBody UserInfo userInfo) {
+	public ResponseEntity<?> bookFlight(@RequestBody UserInfo userInfo) {
 
 		// convert DTO to entity
 
@@ -87,7 +88,56 @@ public class UserController {
 		// convert entity to DTO
 
 		UserInfo userInput = modelMapper.map(book, UserInfo.class);
-		return new ResponseEntity<UserInfo>(userInput, HttpStatus.CREATED);
+		return new ResponseEntity<>("Your Ticket book succesfully..  PNR number is : "+userInput.getId(), HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/getAllBookFlight")
+	public List<BookFlight> getAllBookFlight(){
+		
+		return bookFlights.getAllBookFlight();
+	}
+	
+	@GetMapping("/getFlightByPnr/{id}")
+public ResponseEntity<BookFlight> getFlightByPnr(@PathVariable Integer id){
+		
+		ResponseEntity<BookFlight> resp=null;
+		try {
+			BookFlight flightByPnr = bookFlights.getFlightByPnr(id);
+			resp=ResponseEntity.ok(flightByPnr);
+		} catch (Exception e) {
+			 resp=new ResponseEntity<BookFlight>(HttpStatus.NOT_FOUND);
+			 e.printStackTrace();
+		}
+		return resp;
+	}
+	
+	
+	@GetMapping("/getFlightByEmailId/{email}")
+	public ResponseEntity<List<BookFlight>> getFlightByEmailId(@PathVariable String email){
+			
+			ResponseEntity<List<BookFlight>> resp=null;
+			try {
+				List<BookFlight> flightByemail = bookFlights.getByEmail(email);
+				resp=ResponseEntity.ok(flightByemail);
+			} catch (Exception e) {
+				 resp=new ResponseEntity<List<BookFlight>>(HttpStatus.NOT_FOUND);
+				 e.printStackTrace();
+			}
+			return resp;
+		}
+	
+	@DeleteMapping("/getCancelByPnr/{id}")
+	public ResponseEntity<String> getCancelByPnr(@PathVariable Integer id){
+		
+		ResponseEntity<String> resp=null;
+		try {
+			bookFlights.cancelBookFlight(id);
+			resp=ResponseEntity.ok("Fligh Ticket Cancel Succesfully With PNR  " +id);
+		} catch (Exception e) {
+			 resp=new ResponseEntity<String>("This PNR number not exist ",HttpStatus.NOT_FOUND);
+			 e.printStackTrace();
+		}
+		return resp;
 	}
 
 }

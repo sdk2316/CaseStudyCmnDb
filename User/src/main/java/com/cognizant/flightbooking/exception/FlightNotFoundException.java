@@ -15,6 +15,14 @@ public class FlightNotFoundException {
 		
 	}
 	
+	
+	@ExceptionHandler(value=PnrNotFoundException.class)
+	public ResponseEntity<String> handlePnrNotFoundException(){
+		
+		return new ResponseEntity<String>("PNR Number Not Found",HttpStatus.NOT_FOUND);
+		
+	}
+	
 	@ExceptionHandler(value=FillCompleteFormException.class)
 	public ResponseEntity<String> handleFillCompleteFormException(){
 		
