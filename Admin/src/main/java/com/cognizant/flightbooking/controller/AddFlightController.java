@@ -191,23 +191,6 @@ public class AddFlightController {
 		return resp;
 	}
 
-//	@DeleteMapping("/deleteFlight/{flightNumber}")
-//	public ResponseEntity<?> deleteFlight(@PathVariable("flightNumber") Integer flightNumber) {
-//
-//		ResponseEntity<?> resp = null;
-//		try {
-//
-//			flightService.deleteFlightByNumber(flightNumber);
-//			resp = ResponseEntity.ok("Flight Deleted with id " + flightNumber);
-//
-//		} catch (Exception e) {
-//
-//			resp = new ResponseEntity<String>(" Flight not present with  this id  " + flightNumber,
-//					HttpStatus.NOT_FOUND);
-//			e.printStackTrace();
-//		}
-//		return resp;
-//	}
 
 	// http://localhost:9092/updateFlight/SA33
 	// done
@@ -217,8 +200,7 @@ public class AddFlightController {
 
 		ResponseEntity<?> resp = null;
 
-		// ResponseEntity<AddFlightDetails> flight = new
-		// ResponseEntity<>(HttpStatus.OK);
+		
 
 		System.out.println(flightNumber);
 		System.out.println(addFlight);
@@ -232,6 +214,18 @@ public class AddFlightController {
 					HttpStatus.NOT_FOUND);
 		}
 		return resp;
+	}
+	
+	//block flight
+	@PutMapping("/blockFlight/{flightNumber}")
+	public ResponseEntity<?> blockFlight(@PathVariable("flightNumber") Integer flightNumber,boolean block){
+		System.out.println(flightNumber);
+		System.out.println(block);
+		
+		
+	return new ResponseEntity<String>(flightService.blockAirline(flightNumber, block)+" record updated to "+block, HttpStatus.CREATED);
+
+		
 	}
 
 }

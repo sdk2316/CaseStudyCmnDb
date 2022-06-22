@@ -52,6 +52,21 @@ public class AddFlightDetails {
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date dateOfDeparture;
+	
+	private boolean block;
+	
+
+	public boolean isBlock() {
+		return block;
+	}
+
+
+
+	public void setBlock(boolean block) {
+		this.block = block;
+	}
+
+
 
 	public AddFlightDetails() {
 		super();
@@ -60,7 +75,7 @@ public class AddFlightDetails {
 
 	
 
-	public AddFlightDetails(Integer id, Integer flightNumber, String operatingAirlines, String fromPlace,
+	public AddFlightDetails(Integer id, String operatingAirlines, String fromPlace,
 			String toPlace, Date startDate, Date endDate, String scheduleDays, Integer businessSeats,
 			Integer nonBusinessSeats, Double cost, Date dateOfDeparture) {
 		super();
@@ -77,6 +92,8 @@ public class AddFlightDetails {
 		this.cost = cost;
 		this.dateOfDeparture = dateOfDeparture;
 	}
+
+
 
 	public Integer getId() {
 		return id;
@@ -194,5 +211,7 @@ public class AddFlightDetails {
 				+ ", nonBusinessSeats=" + nonBusinessSeats + ", cost=" + cost + ", dateOfDeparture=" + dateOfDeparture
 				+ "]";
 	}
+
+
 
 }

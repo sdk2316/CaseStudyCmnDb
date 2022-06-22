@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -31,7 +32,10 @@ public interface AddFlightRepository extends JpaRepository<AddFlightDetails, Int
 	List<AddFlightDetails> searchFlight(String fromPlace, String toPlace,  Date startDate);
 
 	 
-
+	@Transactional
+	@Modifying
+	@Query("UPDATE AddFlightDetails SET block = :block WHERE flightNumber = :flightNumber")
+	Integer updateAirline(Integer flightNumber, boolean block);
 
 	
 }

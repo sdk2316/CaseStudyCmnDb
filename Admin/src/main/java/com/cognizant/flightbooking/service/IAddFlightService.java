@@ -27,4 +27,6 @@ public interface IAddFlightService {
 	
 	
 	List<AddFlightDetails> searchFlight(String fromPlace, String toPlace,  Date startDate);
+	
+	public Integer blockAirline(Integer flightNumber, boolean block);
 }

@@ -14,5 +14,12 @@ public class FlightNotFoundException {
 		return new ResponseEntity<String>("Flight Not Found",HttpStatus.BAD_REQUEST);
 		
 	}
+	
+	@ExceptionHandler(value=FlightNumberAlreadyExistException.class)
+	public ResponseEntity<String> handleFlightNumberAlreadyExistException(){
+		
+		return new ResponseEntity<String>("Flight Number Already Exist",HttpStatus.BAD_REQUEST);
+		
+	}
 
 }

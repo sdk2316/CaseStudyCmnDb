@@ -2,11 +2,13 @@ package com.cognizant.flightbooking.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cognizant.flightbooking.entity.AddFlightDetails;
+import com.cognizant.flightbooking.exception.FlightNumberAlreadyExistException;
 import com.cognizant.flightbooking.exception.ResourceNotFoundException;
 import com.cognizant.flightbooking.repossitory.AddFlightRepository;
 
@@ -18,19 +20,23 @@ public class AddFlightServiceImpl implements IAddFlightService {
 
 	@Override
 	public Integer saveFlight(AddFlightDetails addFlight) {
-		// TODO Auto-generated method stub
+		
+		Optional<AddFlightDetails> existFlight = flightRepository.findByFlightNumber(addFlight.getFlightNumber());
+		if(existFlight.isPresent()) {
+			throw new FlightNumberAlreadyExistException(" "+addFlight.getFlightNumber());
+		}
 		return flightRepository.save(addFlight).getFlightNumber();
 	}
 
 	@Override
 	public List<AddFlightDetails> getAllFlight() {
-		// TODO Auto-generated method stub
+		
 		return flightRepository.findAll();
 	}
 
 	@Override
 	public AddFlightDetails getFlight(String flightName) {
-		// TODO Auto-generated method stub
+		
 		return  flightRepository.findByOperatingAirlines(flightName)
 				.orElseThrow(() -> new ResourceNotFoundException("flightName not found"));
 
@@ -38,23 +44,15 @@ public class AddFlightServiceImpl implements IAddFlightService {
 
 	@Override
 	public AddFlightDetails getflightNumber(Integer flightNumber) {
-		// TODO Auto-generated method stub
+		
 		return flightRepository.findByFlightNumber(flightNumber).get();
 
 	}
 
-//	@Override
-//	public void deleteFlightByNumber(Integer flightNumber) {
-//		// TODO Auto-generated method stub
-//		//deleteFlightById
-//
-//		flightRepository.deleteById(flightNumber);
-//	}
-	
+
 	@Override
 	public void deleteFlightById(Integer flightNumber) {
-		// TODO Auto-generated method stub
-		//deleteFlightById
+		
 		AddFlightDetails existingflightNumber = getflightNumber(flightNumber);
 
 		flightRepository.delete(existingflightNumber);
@@ -87,6 +85,12 @@ public class AddFlightServiceImpl implements IAddFlightService {
 	
 	public List<AddFlightDetails> searchFlight(String fromPlace, String toPlace,  Date startDate) {
 				return flightRepository.searchFlight(fromPlace, toPlace,startDate);
+	}
+
+	@Override
+	public Integer blockAirline(Integer flightNumber, boolean block) {
+		
+		return flightRepository.updateAirline(flightNumber, block);
 	}
 
 
