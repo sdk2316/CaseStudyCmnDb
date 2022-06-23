@@ -29,24 +29,24 @@ public class BookFlightImpl implements IBookFlight{
 	}
 
 	@Override
-	public void cancelBookFlight(Integer id) {
+	public void cancelBookFlight(Integer pnr) {
 		
 		try {
-			 bookFlightRepo.deleteById(id);
+			 bookFlightRepo.deleteById(pnr);
 		} catch (Exception e) {
 			// TODO: handle exception
-			throw new PnrNotFoundException("PNT Not Found "+id);
+			throw new PnrNotFoundException("PNT Not Found "+pnr);
 		}
 		
 	}
 
 	@Override
-	public BookFlight getFlightByPnr(Integer id) {
+	public BookFlight getFlightByPnr(Integer pnr) {
 		try {
-			return  bookFlightRepo.findById(id).get();
+			return  bookFlightRepo.findById(pnr).get();
 		} catch (Exception e) {
 			// TODO: handle exception
-			throw new PnrNotFoundException("PNT Not Found "+id);
+			throw new PnrNotFoundException("PNT Not Found "+pnr);
 		}
 	}
 

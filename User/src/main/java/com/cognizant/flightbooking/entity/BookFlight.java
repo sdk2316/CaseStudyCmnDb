@@ -3,8 +3,6 @@ package com.cognizant.flightbooking.entity;
 import java.util.Random;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
@@ -13,6 +11,7 @@ public class BookFlight {
 	
 	@Id
 	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	
 	private Integer id=  new Random().nextInt(99999999);
 	
 	private String userFirstName;

@@ -11,9 +11,9 @@ public interface IBookFlight {
 	
 	List<BookFlight> getAllBookFlight();
 	
-	void cancelBookFlight(Integer id);
+	void cancelBookFlight(Integer pnr);
 	
-	BookFlight getFlightByPnr(Integer id);
+	BookFlight getFlightByPnr(Integer  pnr);
 	
 	List<BookFlight> getByEmail(String email);
 	

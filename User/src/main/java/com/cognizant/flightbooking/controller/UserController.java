@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cognizant.flightbooking.entity.AddFlightDetails;
 import com.cognizant.flightbooking.entity.BookFlight;
+import com.cognizant.flightbooking.exception.EmailIdNotFoundException;
 import com.cognizant.flightbooking.exception.FillCompleteFormException;
 import com.cognizant.flightbooking.exception.ResourceNotFoundException;
 import com.cognizant.flightbooking.payload.UserInfo;
@@ -51,9 +52,11 @@ public class UserController {
 			@PathVariable("toPlace") String toPlace,
 			@PathVariable("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate) {
 		List<AddFlightDetails> fromPlaceAndtoPlace = null;
+		//AddFlightDetails addFlightDetails=new AddFlightDetails();
+		
 
 		try {
-			if (fromPlace != null && toPlace != null) {
+			if (fromPlace != null && toPlace != null && startDate!=null  ) {
 				fromPlaceAndtoPlace = flightService.searchFlight(fromPlace, toPlace, startDate);
 				if (fromPlaceAndtoPlace.size() == 0) {
 					throw new ResourceNotFoundException();
@@ -97,12 +100,12 @@ public class UserController {
 		return bookFlights.getAllBookFlight();
 	}
 	
-	@GetMapping("/getFlightByPnr/{id}")
-public ResponseEntity<BookFlight> getFlightByPnr(@PathVariable Integer id){
+	@GetMapping("/getFlightByPnr/{pnr}")
+public ResponseEntity<BookFlight> getFlightByPnr(@PathVariable Integer pnr){
 		
 		ResponseEntity<BookFlight> resp=null;
 		try {
-			BookFlight flightByPnr = bookFlights.getFlightByPnr(id);
+			BookFlight flightByPnr = bookFlights.getFlightByPnr(pnr);
 			resp=ResponseEntity.ok(flightByPnr);
 		} catch (Exception e) {
 			 resp=new ResponseEntity<BookFlight>(HttpStatus.NOT_FOUND);
@@ -118,21 +121,26 @@ public ResponseEntity<BookFlight> getFlightByPnr(@PathVariable Integer id){
 			ResponseEntity<List<BookFlight>> resp=null;
 			try {
 				List<BookFlight> flightByemail = bookFlights.getByEmail(email);
+				if(flightByemail.size()==0) {
+					throw new EmailIdNotFoundException();
+				}
 				resp=ResponseEntity.ok(flightByemail);
 			} catch (Exception e) {
-				 resp=new ResponseEntity<List<BookFlight>>(HttpStatus.NOT_FOUND);
+				resp=new ResponseEntity<List<BookFlight>>(HttpStatus.INTERNAL_SERVER_ERROR);
 				 e.printStackTrace();
+				
+				
 			}
 			return resp;
 		}
 	
-	@DeleteMapping("/getCancelByPnr/{id}")
-	public ResponseEntity<String> getCancelByPnr(@PathVariable Integer id){
+	@DeleteMapping("/getCancelByPnr/{pnr}")
+	public ResponseEntity<String> getCancelByPnr(@PathVariable Integer pnr){
 		
 		ResponseEntity<String> resp=null;
 		try {
-			bookFlights.cancelBookFlight(id);
-			resp=ResponseEntity.ok("Fligh Ticket Cancel Succesfully With PNR  " +id);
+			bookFlights.cancelBookFlight(pnr);
+			resp=ResponseEntity.ok("Fligh Ticket Cancel Succesfully With PNR  " +pnr);
 		} catch (Exception e) {
 			 resp=new ResponseEntity<String>("This PNR number not exist ",HttpStatus.NOT_FOUND);
 			 e.printStackTrace();

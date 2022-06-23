@@ -2,6 +2,7 @@ package com.cognizant.flightbooking.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +18,7 @@ public class AddFlightDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	
 	private Integer id;
 
 	private Integer flightNumber;
@@ -41,6 +43,19 @@ public class AddFlightDetails {
 	private Integer nonBusinessSeats;
 
 	private Double cost;
+	
+	private Boolean block;
+	
+
+	public Boolean getBlock() {
+		return block;
+	}
+
+
+	public void setBlock(Boolean block) {
+		this.block = block;
+	}
+
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date dateOfDeparture;

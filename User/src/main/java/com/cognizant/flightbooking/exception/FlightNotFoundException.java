@@ -8,6 +8,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class FlightNotFoundException {
 	
+	@ExceptionHandler(value=EmailIdNotFoundException.class)
+	public ResponseEntity<String> handleEmailIdNotFoundException(){
+		
+		return new ResponseEntity<String>("This EmailId Not Exist with Us ",HttpStatus.NOT_FOUND);
+		
+	}
+	
 	@ExceptionHandler(value=ResourceNotFoundException.class)
 	public ResponseEntity<String> handleCompanyNotFoundException(){
 		
